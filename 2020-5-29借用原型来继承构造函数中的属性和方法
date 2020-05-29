@@ -1,0 +1,60 @@
+---
+layout:     post                    # 使用的布局（不需要改）
+title:     借用原型来继承构造函数中的属性和方法               # 标题 
+subtitle:   Hello World, Hello Blog #副标题
+date:       2020-05-29            # 时间
+author:     BY                      # 作者
+header-img: img/post-bg-2015.jpg    #这篇文章标题背景图片
+catalog: true                       # 是否归档
+tags:                               #标签
+    - JaveScript
+---
+
+## Hey
+>这是我的第一篇博客。
+
+进入你的博客主页，新的文章将会出现在你的主页上.
+# 
+
+## 子构造函数继承父构造函数的属性:
+
+子构造函数继承父函数的属性可以通过call()函数，call()函数用于修改this的指向，将其由父函数指向子函数。
+
+```
+ function Father(money, cars, house, company) {
+            this.money = money;
+            this.cars = cars;
+            this.house = house;
+            this.company = company;
+            
+        }
+        //子函数用于继承父函数
+        function Son(money, cars, house, company) {
+            Father.call(this, money, cars, house, company)
+        }
+```
+
+## 子构造函数继承父构造函数的方法：
+
+子构造函数添加方法可以在其原型函数prototype中添加， `Father.prototype.manage`表明在父构造函数中添加了manage方法。
+
+```
+Father.prototype.manage = function() {
+            console.log('mannage');
+        }
+```
+
+此时‘manage’方法在父构造函数Father的原型对象中，而Father的实例对象会有`__proto__`指向构造函数的prototype原型对象。因此字构造函数需要访问父构造函数的对象，必须访问父构造函数的prototype原型对象。因此通过子构造函数的原型对象实例化父构造函数：
+
+```
+ Son.prototype = new Father();
+```
+
+此时子原型对象指向了父构造函数的实例化对象，改变了子原型对象的指向，因此采用constructor指回原来的构造函数。
+
+```
+Son.prototype.constructor = Son;
+```
+
+![绘图1](D:\a前端学习\源代码和素材\07-10 JavaScript网页编程\04-JavaScript高级资料\JavaScript 高级_day02\5-作业\作业代码\绘图1.png)
+
